@@ -34,10 +34,8 @@ def test_dark_theme_by_time_and_user_choice():
             is_dark_theme = False
         else:
             is_dark_theme = True
-    elif dark_theme_enabled_by_user:
-        is_dark_theme = True
     else:
-        is_dark_theme = False
+        is_dark_theme = dark_theme_enabled_by_user
 
     assert is_dark_theme is True
 
@@ -67,11 +65,7 @@ def test_find_suitable_user():
 
     # TODO найдите всех пользователей младше 20 лет
 
-    suitable_users = []
-
-    for user in users:
-        if user["age"] < 20:
-            suitable_users.append(user)
+    suitable_users = [i for i in users if i["age"] < 20]
 
     assert suitable_users == [
         {"name": "Stanislav", "age": 15},
@@ -88,20 +82,11 @@ def test_find_suitable_user():
 # сделать буквы заглавными (или первую букву), затем вывести значения всех аргументов этой функции:
 # >>> open_browser(browser_name="Chrome")
 # "Open Browser [Chrome]"
+
 def readable_function(func, *args):
-    result = ''
-    prev_char = ''
-    for index, char in enumerate(func.__name__):
-        if index == 0:
-            result = result + char.upper()
-        elif prev_char == '_':
-            result = result + char.upper()
-        elif char == '_':
-            result = result + ' '
-        else:
-            result = result + char
-        prev_char = char
-    result = f'{result} [{", ".join(args)}]'
+    func_name = func.__name__.replace('_', ' ').title()
+    arg_name = ", ".join([*args])
+    result = f'{func_name} [{arg_name}]'
     print(result)
     return result
 
